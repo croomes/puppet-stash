@@ -1,0 +1,25 @@
+{
+  "name": "puppet-stash",
+  "author": "Bryce Johnson",
+  "description": "",
+  "license": "Apache 2.0",
+  "project_page": "http://github.com/brycejohnson/puppet-stash",
+  "source": "http://github.com/brycejohnson/puppet-stash",
+  "summary": "Puppet Stash module for Atlassian Stash Enterprise Git Repository",
+  "version": "0.0.1",
+  "checksums": {
+    "LICENSE": "34400b68072d710fecd0a2940a0d1658",
+    "Modulefile": "43de22e6dba4bfda8877218692b0ff5a",
+    "README.md": "93a83735545ce549dd05427029a36dc8",
+    "manifests/config.pp": "0b637d4085390bffb3b031521f434f3c",
+    "manifests/init.pp": "696a7e65a293ada23f05de55c9f640d4",
+    "manifests/install.pp": "1506611fdd427d583308da932762e81a",
+    "manifests/params.pp": "a5e27b7b338f63fd3b2a6aa7cdc089dc",
+    "manifests/service.pp": "be137131653e3fca50645b1b4d1e5efc",
+    "stash.yaml": "ed125645b518d6a0cfd549a5f40f898f",
+    "templates/etc/rc.d/init.d/stash.erb": "ae9f13a2445a7971748055de08020916",
+    "templates/setenv.sh.erb": "eec270f58f07c4a450274e85e7342901",
+    "templates/stash-config.properties.erb": "f13be78d0bb5c04d1fac14c47dc5fb3a"
+  },
+  "dependencies": []
+}
