@@ -14,8 +14,19 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #-----------------------------------------------------------------------------
-# chkconfig: 2345 70 80
-# description: Starts stash
+### BEGIN INIT INFO
+# Provides: stash
+# Required-Start: 
+# Required-Stop: 
+# Should-Start: 
+# Should-Stop: 
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start up Stash Git Server
+# Description:       Atlassian Stash Enterprise Git Server
+#                    This service starts up the tomcat webapp.
+### END INIT INFO
+
 ACTION=$1
 
 function statusService() {

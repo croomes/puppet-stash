@@ -34,12 +34,4 @@ class stash::config{
     mode    => '0644',
     require => [Class['stash::install'],Exec['mkdirp-homedir']],
   }
-
-  # add service via chkconfig
-  exec { 'chkconfig-stash':
-    cwd     => "${stash::params::tmpdir}",
-    command => "/sbin/chkconfig --add ${stash::params::product}",
-    require => Class['stash::install'],
-    unless  => "/sbin/chkconfig --list |grep ^${stash::params::product}",
-  }
 }

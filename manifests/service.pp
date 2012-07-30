@@ -15,8 +15,6 @@
 #-----------------------------------------------------------------------------
 class stash::service {
 
-  require stash::params
-
   service { 'stash':
     ensure  => 'running',
     name    => 'stash',
