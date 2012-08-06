@@ -14,10 +14,10 @@
     "manifests/config.pp": "f9a5b64b291d67041ba6bbe26ce357dd",
     "manifests/init.pp": "696a7e65a293ada23f05de55c9f640d4",
     "manifests/install.pp": "1506611fdd427d583308da932762e81a",
-    "manifests/params.pp": "a5e27b7b338f63fd3b2a6aa7cdc089dc",
+    "manifests/params.pp": "be0da93559d75b2f4a0f32a353503f90",
     "manifests/service.pp": "220708cf008ccb69ce8867b779389e8f",
-    "stash.yaml": "ed125645b518d6a0cfd549a5f40f898f",
-    "templates/etc/rc.d/init.d/stash.erb": "8bcd15752938258cbaf9560fdbf448c6",
+    "stash.yaml": "f4c00baafe56d758f22f74ec9542ec4c",
+    "templates/etc/rc.d/init.d/stash.erb": "63308e1308a0aada66be00bf74f1df87",
     "templates/setenv.sh.erb": "eec270f58f07c4a450274e85e7342901",
     "templates/stash-config.properties.erb": "f13be78d0bb5c04d1fac14c47dc5fb3a"
   },

@@ -54,6 +54,7 @@ stash_dbserver: localhost
 
 # Tomcat configuration
 # TODO because I'm never a fan of the stock tomcat settings
+stash_javahome: /opt/java/jdk1.6.0_33
 stash_jvm_xmx: 1024m
 stash_jvm_optional: -XX:-HeapDumpOnOutOfMemoryError
 #stash_jvm_optional: -XX:NewSize=256m -XX:MaxNewSize=256m -XX:SurvivorRatio=16

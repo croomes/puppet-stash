@@ -28,6 +28,7 @@
 ### END INIT INFO
 
 ACTION=$1
+export JAVA_HOME=<%= scope.lookupvar('stash::params::javahome') %>
 
 function statusService() {
   status <%= scope.lookupvar('stash::params::product') %>

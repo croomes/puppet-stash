@@ -34,6 +34,7 @@ class stash::params {
   $dburl        = "jdbc:${db}://${dbserver}:${dbport}/stash"
 
   # JVM Settings
+  $javahome     = hiera('stash_javahome')
   $jvm_xmx      = hiera('stash_jvm_xmx')
   $jvm_optional = hiera('stash_jvm_optional')
 
