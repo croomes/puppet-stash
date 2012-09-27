@@ -34,7 +34,7 @@ class stash::install {
     }
   }
 
-  exec { 'mkdirp-installdir':
+  exec { 'mkdirp-installdir-stash':
     cwd     => "${stash::params::tmpdir}",
     command => "/bin/mkdir -p ${stash::params::installdir}",
     creates => "${stash::params::installdir}",
@@ -43,7 +43,7 @@ class stash::install {
     cwd     => "${stash::params::installdir}",
     command => "/usr/bin/unzip -o -d ${stash::params::installdir} ${stash::params::tmpdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}",
     creates => "${stash::params::webappdir}",
-    require => [Exec['wget-stash-package'],Exec['mkdirp-installdir']],
+    require => [Exec['wget-stash-package'],Exec['mkdirp-installdir-stash']],
   }
 
   file { '/etc/rc.d/init.d/stash':

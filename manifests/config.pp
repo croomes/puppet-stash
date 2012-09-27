@@ -23,7 +23,7 @@ class stash::config{
     require => Class['stash::install'],
   }
 
-  exec { 'mkdirp-homedir':
+  exec { 'mkdirp-homedir-stash':
     cwd     => "${stash::params::tmpdir}",
     command => "/bin/mkdir -p ${stash::params::homedir}",
     creates => "${stash::params::homedir}"
@@ -32,6 +32,6 @@ class stash::config{
   file { "${stash::params::homedir}/stash-config.properties":
     content => template('stash/stash-config.properties.erb'),
     mode    => '0644',
-    require => [Class['stash::install'],Exec['mkdirp-homedir']],
+    require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
   }
 }
