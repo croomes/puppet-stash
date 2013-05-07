@@ -16,9 +16,12 @@
 class stash::service {
 
   service { 'stash':
-    ensure  => 'running',
-    name    => 'stash',
-    enable  => true,
-    require => Class['stash::config'],
+    provider  => base,
+    ensure    => 'running',
+    start     => '/etc/init.d/stash start',
+    restart   => '/etc/init.d/stash restart',
+    stop      => '/etc/init.d/stash stop',
+    status    => '/etc/init.d/stash status',
+    require   => Class['stash::config'],
   }
 }

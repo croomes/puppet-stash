@@ -77,6 +77,7 @@ if [ -f "${PRGDIR}/permgen.sh" ]; then
 fi
 
 export JAVA_OPTS
+export JAVA_HOME=<%= scope.lookupvar('stash::params::javahome') %>
 
 echo ""
 echo "If you encounter issues starting or stopping Atlassian Stash, please see the Troubleshooting guide at http://confluence.atlassian.com/display/STASH/Installation+Troubleshooting+Guide"

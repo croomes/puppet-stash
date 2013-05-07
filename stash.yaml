@@ -19,7 +19,7 @@
 #
 # Atlassian Stash Git Enterprise Source Control Server
 stash_name: stash
-stash_version: 1.2.2
+stash_version: 2.4.0
 stash_package_format: zip
 
 # Directory where the webapp will run from
@@ -35,7 +35,11 @@ stash_db: postgresql
 #stash_db: mysql
 #stash_db: oracle
 
+stash_dbtype: postgres72
+#stash_dbtype: mysql
+
 stash_dbdriver: org.postgresql.Driver
+#stash_dbdriver: com.mysql.jdbc.Driver
 
 # Change these values to your stash database credentials
 stash_dbuser: stashadm
