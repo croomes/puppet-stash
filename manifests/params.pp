@@ -29,9 +29,11 @@ class stash::params {
   $dbuser       = hiera('stash_dbuser')
   $dbpassword   = hiera('stash_dbpassword')
   $dbserver     = hiera('stash_dbserver')
+  $dbname       = hiera('stash_dbname')
   $dbport       = hiera('stash_dbport')
   $dbdriver     = hiera('stash_dbdriver')
-  $dburl        = "jdbc:${db}://${dbserver}:${dbport}/stash"
+  $dbtype       = hiera('stash_dbtype')
+  $dburl        = "jdbc:${db}://${dbserver}:${dbport}/${product}"
 
   # JVM Settings
   $javahome     = hiera('stash_javahome')

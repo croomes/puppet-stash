@@ -34,4 +34,21 @@ class stash::config{
     mode    => '0644',
     require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
   }
+
+  if "${stash::params::db}" == 'postgresql' {
+    file { "${stash::params::homedir}/dbconfig.xml":
+      content => template('stash/dbconfig.postgres.xml.erb'),
+      mode    => '0600',
+      require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
+      notify  => Class['stash::service'],
+    }
+  }
+  if "${stash::params::db}" == 'mysql' {
+    file { "${stash::params::homedir}/dbconfig.xml":
+      content => template('stash/dbconfig.mysql.xml.erb'),
+      mode    => '0600',
+      require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
+      notify  => Class['stash::service'],
+    }
+  }
 }
