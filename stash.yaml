@@ -41,6 +41,8 @@ stash_dbtype: postgres72
 stash_dbdriver: org.postgresql.Driver
 #stash_dbdriver: com.mysql.jdbc.Driver
 
+stash_dbname: stash
+
 # Change these values to your stash database credentials
 stash_dbuser: stashadm
 stash_dbpassword: stashadm
