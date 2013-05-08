@@ -22,6 +22,6 @@ class stash::service {
     restart   => '/etc/init.d/stash restart',
     stop      => '/etc/init.d/stash stop',
     status    => '/etc/init.d/stash status',
-    require   => Class['stash::config'],
+    require   => [Class['stash::config'], Class['stash::user']],
   }
 }

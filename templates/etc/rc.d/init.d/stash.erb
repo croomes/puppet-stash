@@ -13,7 +13,7 @@
 
 # Adapt the following lines to your configuration
 # RUNUSER: The user to run Stash as.
-RUNUSER=root
+RUNUSER="<%= scope.lookupvar('stash::params::user') %>"
 
 # STASH_INSTALLDIR: The path to the Stash installation directory
 STASH_INSTALLDIR="<%= scope.lookupvar('stash::params::webappdir') %>"

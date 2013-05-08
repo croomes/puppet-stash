@@ -18,5 +18,6 @@ class stash {
   include stash::params
   include stash::install
   include stash::config
+  include stash::user
   include stash::service
 }

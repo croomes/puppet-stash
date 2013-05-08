@@ -39,11 +39,32 @@ class stash::install {
     command => "/bin/mkdir -p ${stash::params::installdir}",
     creates => "${stash::params::installdir}",
   }
+
+  file { "${stash::params::installdir}":
+    ensure  => 'directory',
+    owner   => "${stash::params::user}",
+    group   => "${stash::params::group}",
+    require => [Exec['mkdirp-installdir-stash'], Class['stash::user']],
+  }
+
   exec { 'unzip-stash-package':
     cwd     => "${stash::params::installdir}",
     command => "/usr/bin/unzip -o -d ${stash::params::installdir} ${stash::params::tmpdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}",
     creates => "${stash::params::webappdir}",
-    require => [Exec['wget-stash-package'],Exec['mkdirp-installdir-stash']],
+    user    => "${stash::params::user}",
+    group   => "${stash::params::group}",
+    require => [Exec['wget-stash-package'], Class['stash::user'], File["${stash::params::installdir}"]],
+  }
+
+  if "${stash::params::db}" == 'mysql' {
+    exec { 'wget-mysql-driver':
+      cwd     => "${stash::params::webappdir}/lib/",
+      command => "${stash::params::cmdwget} --no-check-certificate ${stash::params::mysqldownloadURL}",
+      creates => "${stash::params::webappdir}/lib/${stash::params::mysqlfilename}",
+      user    => "${stash::params::user}",
+      group   => "${stash::params::group}",
+      require => Exec['unzip-stash-package'],
+    }
   }
 
   file { '/etc/rc.d/init.d/stash':

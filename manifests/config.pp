@@ -20,25 +20,38 @@ class stash::config{
   file { "${stash::params::webappdir}/bin/setenv.sh":
     content => template('stash/setenv.sh.erb'),
     mode    => '0755',
-    require => Class['stash::install'],
+    owner   => "${stash::params::user}",
+    group   => "${stash::params::group}",
+    require => [Class['stash::install'], Class['stash::user']],
   }
 
   exec { 'mkdirp-homedir-stash':
     cwd     => "${stash::params::tmpdir}",
     command => "/bin/mkdir -p ${stash::params::homedir}",
-    creates => "${stash::params::homedir}"
+    creates => "${stash::params::homedir}",
+  }
+
+  file { "${stash::params::homedir}":
+    ensure  => 'directory',
+    owner   => "${stash::params::user}",
+    group   => "${stash::params::group}",
+    require => [Exec['mkdirp-homedir-stash'], Class['stash::user']],
   }
 
   file { "${stash::params::homedir}/stash-config.properties":
     content => template('stash/stash-config.properties.erb'),
     mode    => '0644',
-    require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
+    owner   => "${stash::params::user}",
+    group   => "${stash::params::group}",
+    require => [Class['stash::install'],Class['stash::user'],Exec["mkdirp-homedir-stash"]],
   }
 
   if "${stash::params::db}" == 'postgresql' {
     file { "${stash::params::homedir}/dbconfig.xml":
       content => template('stash/dbconfig.postgres.xml.erb'),
       mode    => '0600',
+      owner   => "${stash::params::user}",
+      group   => "${stash::params::group}",
       require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
       notify  => Class['stash::service'],
     }
@@ -47,6 +60,8 @@ class stash::config{
     file { "${stash::params::homedir}/dbconfig.xml":
       content => template('stash/dbconfig.mysql.xml.erb'),
       mode    => '0600',
+      owner   => "${stash::params::user}",
+      group   => "${stash::params::group}",
       require => [Class['stash::install'],Exec['mkdirp-homedir-stash']],
       notify  => Class['stash::service'],
     }
