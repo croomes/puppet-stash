@@ -18,8 +18,8 @@
 # 2.) Modify the database settings below according to your setup
 #
 # Atlassian Stash Git Enterprise Source Control Server
-stash_name: stash
-stash_version: 2.4.0
+stash_name:           stash
+stash_version:        2.4.0
 stash_package_format: zip
 
 # Directory where the webapp will run from
@@ -44,7 +44,7 @@ stash_dbdriver: org.postgresql.Driver
 stash_dbname: stash
 
 # Change these values to your stash database credentials
-stash_dbuser: stashadm
+stash_dbuser:     stashadm
 stash_dbpassword: stashadm
 
 # Change port depending on your db product
@@ -60,10 +60,26 @@ stash_dbserver: localhost
 
 # Tomcat configuration
 # TODO because I'm never a fan of the stock tomcat settings
-stash_javahome: /opt/java/jdk1.6.0_33
-stash_jvm_xmx: 1024m
+stash_javahome:     /opt/java/jdk1.6.0_33
+stash_jvm_xmx:      1024m
 stash_jvm_optional: -XX:-HeapDumpOnOutOfMemoryError
 #stash_jvm_optional: -XX:NewSize=256m -XX:MaxNewSize=256m -XX:SurvivorRatio=16
 # the New and SR figures are purely optional
 # for heap dumps add -XX:-HeapDumpOnOutOfMemoryError
 # by default stash has 256m permgen which is a good setting to go with
+
+# SSL Tomcat Config
+stash_ssl_maxheader:              8192
+stash_ssl_enabled:                true
+stash_ssl_maxthreads:             150
+stash_ssl_minsparethreads:        25
+stash_ssl_maxsparethreads:        75
+stash_ssl_enablelookups:          false
+stash_ssl_disableuploadtimout:    true
+stash_ssl_usebodyencodingforuri:  true
+stash_ssl_acceptcount:            100
+stash_ssl_scheme:                 https
+stash_ssl_secure:                 true
+stash_ssl_clientauth:             false
+stash_ssl_sslprotocol:            TLS
+

@@ -35,6 +35,20 @@ class stash::params {
   $dbtype       = hiera('stash_dbtype')
   $dburl        = "jdbc:${db}://${dbserver}:${dbport}/${product}"
 
+  # SSL Settings for Standalone Install
+  $ssl_maxheader              = hiera('stash_ssl_maxheader')
+  $ssl_enabled                = hiera('stash_ssl_enabled')
+  $ssl_maxthreads             = hiera('stash_ssl_maxthreads')
+  $ssl_minsparethreads        = hiera('stash_ssl_minsparethreads')
+  $ssl_enablelookups          = hiera('stash_ssl_enablelookups')
+  $ssl_disableuploadtimout    = hiera('stash_ssl_disableuploadtimout')
+  $ssl_usebodyencodingforuri  = hiera('stash_ssl_usebodyencodingforuri')
+  $ssl_acceptcount            = hiera('stash_ssl_acceptcount')
+  $ssl_scheme                 = hiera('stash_ssl_scheme')
+  $ssl_secure                 = hiera('stash_ssl_secure')
+  $ssl_clientauth             = hiera('stash_ssl_clientauth')
+  $ssl_sslprotocol            = hiera('stash_ssl_sslprotocol')
+
   # JVM Settings
   $javahome     = hiera('stash_javahome')
   $jvm_xmx      = hiera('stash_jvm_xmx')
@@ -48,7 +62,6 @@ class stash::params {
 
   case $::osfamily {
     'Darwin' : {
-      # HTFU macboy - go download and install wget
       $cmdwget = '/usr/local/bin/wget'
       $tmpdir  = '/tmp'
     }
