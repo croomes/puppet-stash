@@ -2,3 +2,15 @@ jdbc.url=<%= scope.lookupvar('stash::params::dburl') %>
 jdbc.user=<%= scope.lookupvar('stash::params::dbuser') %>
 jdbc.password=<%= scope.lookupvar('stash::params::dbpassword') %>
 jdbc.driver=<%= scope.lookupvar('stash::params::dbdriver') %>
+
+# The maximum number of concurrent requests using git commands using the UI or REST services (e.g. git diff via the UI). Default value is 25.
+throttle.resource.scm-command=<%= scope.lookupvar('stash::params::scmcommand') %>
+
+# Controls how long threads will wait for SCM commands to complete when the system is already running the maximum number of SCM commands. Value is in seconds. Default is 2 seconds.
+throttle.resource.scm-command.timeout=<%= scope.lookupvar('stash::params::scmcommandtimeout') %>
+
+# The maximum number of concurrent requests using "hosting" commands, git clone, git push, git pull. Default value is 1.5*cpu (1.5 times the number of available cpus/cores).
+throttle.resource.scm-hosting=<%= scope.lookupvar('stash::params::scmhosting') %>
+
+# Controls how long threads will wait for SCM commands to complete when the system is already running the maximum number of SCM commands. Value is in seconds. Default is 300 seconds (5 minutes).
+throttle.resource.scm-hosting.timeout=<%= scope.lookupvar('stash::params::scmhostingtimeout') %>

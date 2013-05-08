@@ -31,15 +31,17 @@ stash_home_dir: /opt/stash-home
 # Database configuration - please change these according to your setup
 # Comment out or uncomment for your db product as this value is also
 # overloaded as the jdbc driver db
-stash_db: postgresql
-#stash_db: mysql
+#stash_db: postgresql
+stash_db: mysql
 #stash_db: oracle
 
-stash_dbtype: postgres72
-#stash_dbtype: mysql
+#stash_dbtype: postgres72
+stash_dbtype: mysql
 
-stash_dbdriver: org.postgresql.Driver
-#stash_dbdriver: com.mysql.jdbc.Driver
+#stash_dbdriver: org.postgresql.Driver
+stash_dbdriver: com.mysql.jdbc.Driver
+
+mysqljdbcversion: 5.1.25
 
 stash_dbname: stash
 
@@ -48,15 +50,15 @@ stash_dbuser:     stashadm
 stash_dbpassword: stashadm
 
 # Change port depending on your db product
-stash_dbport: 5432
-#stash_dbport: 3306
+#stash_dbport: 5432
+stash_dbport: 3306
 #stash_dbport: 1521
 
 # Change if your database isn't on localhost.  This module will only check
 # to make sure that the service is running and start it if it is not on
 # localhost db's only.  So if your remote database, which is suggested, isn't
 # available, that's your fault.
-stash_dbserver: localhost
+stash_dbserver: odc.chebacu7ihfm.us-east-1.rds.amazonaws.com
 
 # Tomcat configuration
 # TODO because I'm never a fan of the stock tomcat settings
@@ -83,3 +85,14 @@ stash_ssl_secure:                 true
 stash_ssl_clientauth:             false
 stash_ssl_sslprotocol:            TLS
 
+scm_command: 20
+scm_command_timeout: 2
+scm_hosting: 20
+scm_hosting_timeout: 300
+
+stash_user: stash
+stash_group: stash
+stash_user_home: /home/stash
+stash_user_password: abc123
+stash_gid: 10101
+stash_uid: 10101

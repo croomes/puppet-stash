@@ -14,6 +14,13 @@
 #   limitations under the License.
 #-----------------------------------------------------------------------------
 class stash::params {
+  $user_home            = hiera('stash_user_home')
+  $user_password        = hiera('stash_user_password')
+  $user                 = hiera('stash_user')
+  $group                = hiera('stash_group')
+  $gid                  = hiera('stash_gid')
+  $uid                  = hiera('stash_uid')
+
   # resource types do not allow hiera to be expressed directly
   # so continuing to use params.pp as a variable holder
   # they are also required for the var lookup for the templates
@@ -53,6 +60,17 @@ class stash::params {
   $javahome     = hiera('stash_javahome')
   $jvm_xmx      = hiera('stash_jvm_xmx')
   $jvm_optional = hiera('stash_jvm_optional')
+
+  $baseURL           = hiera('amazon_s3url')
+  $mysqljdbcversion  = hiera("mysqljdbcversion")
+  $mysqlfilename     = "mysql-connector-java-${mysqljdbcversion}-bin.jar"
+  $mysqldownloadURL  = "${baseURL}/${mysqlfilename}"
+
+  #Stash config
+  $scmcommand         = hiera('scm_command')
+  $scmcommandtimeout  = hiera('scm_command_timeout')
+  $scmhosting         = hiera('scm_hosting')
+  $scmhostingtimeout  = hiera('scm_hosting_timeout')
 
   # With my experience, this URL shouldn't ever change and can be
   # used for all Atlassian products, their versions, and file format.
