@@ -19,7 +19,7 @@
 #
 # Atlassian Stash Git Enterprise Source Control Server
 stash_name:           stash
-stash_version:        2.4.0
+stash_version:        2.4.1
 stash_package_format: zip
 
 # Directory where the webapp will run from
