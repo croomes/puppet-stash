@@ -1,131 +1,152 @@
-#! /bin/sh
-
+#!/bin/sh
+#
+# stash     Startup script for stash.
+#
+# chkconfig: 2345 85 28
+# description: Initscript for Atlassian Stash
+ 
 ### BEGIN INIT INFO
-# Provides:          stash
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Initscript for Atlassian Stash
-# Description:  Automatically start Atlassian Stash when the system starts up.
-#               Provide commands for manually starting and stopping Stash.
+# Provides: $stash
+# Required-Start: $local_fs $network $syslog
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog
+# Should-Stop: $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Dscription: Initscript for Atlassian Stash
+# Description: Automatically start Atlassian Stash when the system starts up.
+#              Provide commands for manually starting and stopping Stash.
 ### END INIT INFO
-
-# Adapt the following lines to your configuration
-# RUNUSER: The user to run Stash as.
-RUNUSER="<%= scope.lookupvar('stash::params::user') %>"
-
+#
+# Author: Billy Wilson
+#         <billybob.wilson AT gmail.com>.
+ 
+# Source function library
+. /etc/rc.d/init.d/functions
+ 
+# RUNUSER: The user to run stash as
+RUNUSER=<%= scope.lookupvar('stash::params::user') %>
+ 
 # STASH_INSTALLDIR: The path to the Stash installation directory
 STASH_INSTALLDIR="<%= scope.lookupvar('stash::params::webappdir') %>"
-
-# STASH_HOME: Path to the Stash home directory
+ 
+# STASH_BINDIR: The path to the Stash installation binaries
+STASH_BINDIR="$STASH_INSTALLDIR/bin"
+ 
+# STASH_HOME: The path to the Stash home directory
 STASH_HOME="<%= scope.lookupvar('stash::params::homedir') %>"
-
-# ==================================================================================
-# ==================================================================================
-# ==================================================================================
-
-# PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="Atlassian Stash"
+ 
+# STASH_PID: The path to the Stash PID file
+STASH_PID="$STASH_INSTALLDIR/work/catalina.pid"
+ 
+# For SELinux we need to use 'runuser' instead of 'su'
+if [ -x /sbin/runuser ]
+then
+    SU=runuser
+else
+    SU=su
+fi
+ 
+# Set defaults for Stash name and description
 NAME=<%= scope.lookupvar('stash::params::product') %>
-PIDFILE=$STASH_INSTALLDIR/work/catalina.pid
-SCRIPTNAME=/etc/init.d/$NAME
-
-# Read configuration variable file if it is present
+DESC="Atlassian Stash"
+ 
+# Read configuration variable file if present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
-
-# Define LSB log_* functions.
-# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
-. /lib/lsb/init-functions
-
-
+ 
+ 
+# Function to run commands as $RUNUSER with $STASH_HOME exported
 run_with_home() {
-    if [ "$RUNUSER" != "$USER" ]; then
-        su - "$RUNUSER" -c "export STASH_HOME=${STASH_HOME};${STASH_INSTALLDIR}/bin/$1"
+    if [ "$RUNUSER" != "$USER" ]
+    then
+        $SU - "$RUNUSER" -c "export STASH_HOME=$STASH_HOME; $STASH_BINDIR/$1"
     else
-        export STASH_HOME=${STASH_HOME};${STASH_INSTALLDIR}/bin/$1
+        export STASH_HOME=$STASH_HOME; $STASH_BINDIR/$1
     fi
 }
-
-#
-# Function that starts the daemon/service
-#
-do_start()
-{
-    run_with_home start-stash.sh
-}
-
-#
-# Function that stops the daemon/service
-#
-do_stop()
-{
-    if [ -e $PIDFILE ]; then
-      run_with_home stop-stash.sh
+ 
+script_result=0
+ 
+start(){
+    [ -x "$STASH_BINDIR/start-stash.sh" ] || exit 5
+ 
+    STASH_START=$"Starting $NAME service: "
+ 
+    if [ -e $STASH_PID ]
+    then
+        echo $"$NAME is already running as PID `cat $STASH_PID` (or the PID file is dead)."
+        echo_failure
+        echo
+        exit 1
     else
-      log_failure_msg "$NAME is not running."
+        echo -n "$STASH_START"
+        run_with_home start-stash.sh > /dev/null
+        sleep 2
+        pid=`head -n 1 "$STASH_PID" 2>/dev/null`
+        if [ "x$pid" != x ]
+        then
+            success "$STASH_START"
+            echo
+        else
+            failure "$STASH_START"
+            echo
+            script_result=1
+        fi
     fi
 }
-
-
+ 
+stop(){
+    [ -x "$STASH_BINDIR/stop-stash.sh" ] || exit 5
+ 
+    echo -n $"Stopping $NAME service: "
+    if [ -e "$STASH_HOME/.lock" ]; then
+        run_with_home stop-stash.sh > /dev/null
+        ret=$?
+        if [ $ret -eq 0 ]
+        then
+            echo_success
+        else
+            echo_failure
+            script_result=1
+        fi
+    else
+        # not running; per LSB standards this is "ok"
+        echo_success
+    fi
+    echo
+}
+ 
+ 
+restart(){
+    stop
+    start
+}
+ 
+condrestart(){
+    [ -e "$STASH_HOME/.lock" ] && restart || :
+}
+ 
+ 
 case "$1" in
   start)
-    [ "$VERBOSE" != no ] && log_warning_msg "Starting $DESC" "$NAME"
-    do_start
-    case "$?" in
-        0|1) [ "$VERBOSE" != no ] && log_warning_msg 0 ;;
-        2) [ "$VERBOSE" != no ] && log_warning_msg 1 ;;
-    esac
+    start
     ;;
   stop)
-    [ "$VERBOSE" != no ] && log_warning_msg "Stopping $DESC" "$NAME"
-    do_stop
-    case "$?" in
-        0|1) [ "$VERBOSE" != no ] && log_warning_msg 0 ;;
-        2) [ "$VERBOSE" != no ] && log_warning_msg 1 ;;
-    esac
+    stop
     ;;
   status)
-       #if [ ! -e $PIDFILE ]; then
-       #  log_failure_msg "$NAME is not running."
-        # return 1
-       #fi
-       #status_of_proc -p $PIDFILE "" $NAME && exit 0 || exit $?
-      ps -ef |grep $NAME |grep -v grep |awk '{ print $2 }' | <%= scope.lookupvar('stash::params::javahome') %>/bin/jps |grep -v Jps |grep -v grep > /dev/null
-      RETVAL=$?
-      if [ $RETVAL -eq 0 ];then
-        echo "$NAME is running"
-        exit $RETVAL
-      else
-        echo "$NAME is stopped"
-        exit $RETVAL
-      fi
-      ;;
-  restart|force-reload)
-    #
-    # If the "reload" option is implemented then remove the
-    # 'force-reload' alias
-    #
-    log_warning_msg "Restarting $DESC" "$NAME"
-    do_stop
-    case "$?" in
-      0|1)
-        do_start
-        case "$?" in
-            0) log_warning_msg 0 ;;
-            1) log_warning_msg 1 ;; # Old process is still running
-            *) log_warning_msg 1 ;; # Failed to start
-        esac
-        ;;
-      *)
-        # Failed to stop
-        log_warning_msg 1
-        ;;
-    esac
+    status -p "$STASH_PID" stash
+    script_result=$?
+    ;;
+  restart)
+    restart
+    ;;
+  condrestart|try-restart)
+    condrestart
     ;;
   *)
-    echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
-    exit 3
-    ;;
+    echo "Usage: $0 {start|stop|status|restart|condrestart|try-restart}" >&2
+    exit 2
 esac
+ 
+exit $script_result
