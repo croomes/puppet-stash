@@ -27,6 +27,7 @@ class stash::params {
   $version      = hiera('stash_version')
   $product      = hiera('stash_name')
   $format       = hiera('stash_package_format')
+  $pkgdir       = hiera('stash_package_dir', undef)
   $installdir   = hiera('stash_install_dir')
   $webappdir    = "${installdir}/atlassian-${product}-${version}"
   $homedir      = hiera('stash_home_dir')
@@ -81,11 +82,9 @@ class stash::params {
   case $::osfamily {
     'Darwin' : {
       $cmdwget = '/usr/local/bin/wget'
-      $tmpdir  = '/tmp'
     }
     default : {
       $cmdwget = '/usr/bin/wget'
-      $tmpdir  = '/tmp'
     }
   }
 }

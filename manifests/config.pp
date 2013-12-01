@@ -26,7 +26,6 @@ class stash::config {
   }
 
   exec { 'mkdirp-homedir-stash':
-    cwd     => "${stash::params::tmpdir}",
     command => "/bin/mkdir -p ${stash::params::homedir}",
     creates => "${stash::params::homedir}",
   }

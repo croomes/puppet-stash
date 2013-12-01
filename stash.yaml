@@ -22,6 +22,9 @@ stash_name:           stash
 stash_version:        2.4.1
 stash_package_format: zip
 
+# Directory where packages are already located, or should be downloaded to.
+stash_package_dir: /var/tmp
+
 # Directory where the webapp will run from
 stash_install_dir: /opt/stash
 # If you can put this on another filesystem, and even better, a fs that's

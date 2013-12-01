@@ -17,25 +17,26 @@ class stash::install {
 
   require stash::params
 
+  $packagefile = "${stash::params::pkgdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}"
+
   case $::osfamily {
     'Darwin' : { # assuming you did download wget - ill maybe fix this and check for it
       exec { 'wget-stash-package':
-        cwd     => "${stash::params::tmpdir}",
+        cwd     => "${stash::params::pkgdir}",
         command => "${stash::params::cmdwget} --no-check-certificate ${stash::params::downloadURL}",
-        creates => "${stash::params::tmpdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}",
+        creates => $packagefile,
       }
     }
     default : {
       exec { 'wget-stash-package':
-        cwd     => "${stash::params::tmpdir}",
+        cwd     => "${stash::params::pkgdir}",
         command => "${stash::params::cmdwget} --no-check-certificate ${stash::params::downloadURL}",
-        creates => "${stash::params::tmpdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}",
+        creates => $packagefile,
       }
     }
   }
 
   exec { 'mkdirp-installdir-stash':
-    cwd     => "${stash::params::tmpdir}",
     command => "/bin/mkdir -p ${stash::params::installdir}",
     creates => "${stash::params::installdir}",
   }
@@ -49,7 +50,7 @@ class stash::install {
 
   exec { 'unzip-stash-package':
     cwd     => "${stash::params::installdir}",
-    command => "/usr/bin/unzip -o -d ${stash::params::installdir} ${stash::params::tmpdir}/atlassian-${stash::params::product}-${stash::params::version}.${stash::params::format}",
+    command => "/usr/bin/unzip -o -d ${stash::params::installdir} ${packagefile}",
     creates => "${stash::params::webappdir}",
     user    => "${stash::params::user}",
     group   => "${stash::params::group}",
