@@ -26,7 +26,7 @@ class stash::user{
     managehome  => true,
     password    => "$stash::params::user_password",
     gid         => "$stash::params::gid",
-    comment     => "Stash Servcie User",
+    comment     => "Stash Service User",
     uid         => "$stash::params::uid",
     require     => Group["$stash::params::group"],
   }
